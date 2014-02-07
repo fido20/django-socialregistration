@@ -9,8 +9,8 @@ class FacebookAuth(ModelBackend):
     
     def authenticate(self, uid = None):
         try:
-            return FacebookProfile.objects.get(
+            return FacebookProfile.objects.filter(
                 uid = uid,
-                site = Site.objects.get_current()).user
-        except FacebookProfile.DoesNotExist:
+                site = Site.objects.get_current())[:1][0].user
+        except IndexError:
             return None

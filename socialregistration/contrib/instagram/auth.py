@@ -6,8 +6,8 @@ from django.contrib.auth.backends import ModelBackend
 class InstagramAuth(ModelBackend):
     def authenticate(self, instagram = None):
         try:
-            return InstagramProfile.objects.get(
+            return InstagramProfile.objects.filter(
                 instagram = instagram,
-                site = Site.objects.get_current()).user
-        except InstagramProfile.DoesNotExist:
+                site = Site.objects.get_current())[:1][0].user
+        except IndexError:
             return None
